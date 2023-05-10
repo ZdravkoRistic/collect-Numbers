@@ -1,96 +1,78 @@
-let boxHolder = document.querySelector('.box-holder');
-let selectedNumbers = document.querySelector('.selected-numbers');
+let boxHolder = document.querySelector(".box-holder");
+let selectedNumbers = document.querySelector(".selected-numbers");
 
+function fillGrid() {
+  let html = "";
 
-
-
-function fillGrid(){
-    let html = ``;
-
-
-    for( let i =0; i < 100; i++){
-     let rand = Math.floor(Math.random()*6)+1;
+  for (i = 0; i < 100; i++) {
+    let rand = Math.floor(Math.random() * 6) + 1;
     html += `
-    <div class="cube">${rand}</div>
+    <div class="cube" data-index="${i}">${rand}</div>
     `.trim();
-
-    boxHolder.innerHTML = html;
-    let cubes = document.querySelectorAll('.cube');
-
-  lastTenCube(cubes);
-  
-
-    }
+  }
+  boxHolder.innerHTML = html;
 }
 
 fillGrid();
 
-// DOM 
+let cubes = document.querySelectorAll(".cube");
 
+lastTenCubes(cubes);
 
-
-
-function lastTenCube(cubes){
-    
-    cubes.forEach((cube, index) => {
-        if(index > 89){
-            cube.classList.remove('cube');
-            cube.classList.add('available-cube');
-
-            // izmena
-            cube.addEventListener('click', selectCube);
-        }
-        
-        
-        cube.setAttribute('data-index', index);
-        
-
-    })
-}
-
-// function selectCube(){
-
-//     // izmena
-//   let selectedCube = this;
-
-
-//   console.log(selectedCube);
-
-// selectedNumbers.appendChild(selectedCube)
-
-
-
-// }
-
-
-
-
-
-let selectedCubes = [];
-
-function selectCube() {
-  let selectedCube = this;
-  selectedNumbers.appendChild(selectedCube);
-
-  selectedCubes.push(selectedCube);
-
-  
-
-  if (selectedCubes.length === 3) {
-    deleteCubesFromDiv(selectedCubes);
-    selectedCubes = [];
-  }
-}
-
-
-
-function deleteCubesFromDiv(selectedCubes) {
-
-  selectedCubes.forEach((cube)  => {
-    selectedNumbers.removeChild(cube);
-
+function lastTenCubes(cubes) {
+  cubes.forEach((cube, index) => {
+    if (index >= 90) {
+      cube.classList.remove("cube");
+      cube.classList.add("available-cube");
+      cube.addEventListener("click", selectedCube);
+    }
   });
 }
+
+function selectedCube() {
+  let html = "";
+  let selected = this.innerHTML;
+  this.style.visibility = "hidden";
+  for (let i = 0; i < 10; i++) {
+    html = `<div class="available-cube">${selected}</div>`;
+  }
+  selectedNumbers.innerHTML += html;
+
+ 
+  nextAvailable(this);
+  
+ 
+}
+
+function nextAvailable(current) {
+    let selectedIndex = current.getAttribute("data-index");
+    let nextAvailable = cubes[selectedIndex - 10];
+    nextAvailable.classList.remove("cube");
+    nextAvailable.classList.add("available-cube");
+    nextAvailable.addEventListener("click", selectedCube);
+  }
+  
+
+
+
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
 
 
 
