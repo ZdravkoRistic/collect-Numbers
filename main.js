@@ -32,3 +32,29 @@ function randomNumber() {
 }
 
 
+function reduceColumn(e) {
+  if (e.target == this.lastElementChild) {
+    this.removeChild(this.lastElementChild);
+    selectedNumbers.appendChild(e.target);
+    selectedNumbersArray.push(e.target);
+
+    let num = selectedNumbers.children;
+
+    for (let i = 0; i < num.length; i++) {
+      num[i].classList.add("selected");
+    }
+    let arrayForDelete = document.querySelectorAll(
+      `.selected[data-id="${e.target.innerHTML}"]`
+    );
+    console.log(arrayForDelete);
+
+    if (arrayForDelete.length === 3) {
+      for (let i = 0; i < arrayForDelete.length; i++) {
+        arrayForDelete[i].style.background = "#333";
+        setTimeout(() => {
+          selectedNumbers.removeChild(arrayForDelete[i]);
+        }, 1000);
+      }
+    }
+  }
+}
